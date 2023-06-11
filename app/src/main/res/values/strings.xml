@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Learn&amp;Reflect</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="home_fragment">Home</string>
+    <string name="cards_fragment">Your FlashCards</string>
+    <string name="gratitude_fragment">Gratitude</string>
+    <string name="account_fragment">Your Account</string>
+    <string name="todo">TODO</string>
+</resources>
