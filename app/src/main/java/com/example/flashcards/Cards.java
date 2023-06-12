@@ -70,15 +70,16 @@ public class Cards extends Fragment implements OnDialogCloseListener {
             Log.d("hell", "No Cards");
         }
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        try {
+            fab.setOnClickListener(v -> {
                 AddNewGoal.newInstance().show(requireActivity().getSupportFragmentManager(), AddNewGoal.TAG);
                 showCards();
-            }
-        });
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RVTouchHelper(adapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RVTouchHelper(adapter, getContext()));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
@@ -89,7 +90,11 @@ public class Cards extends Fragment implements OnDialogCloseListener {
         mList = myDBHelper.getAllGoals();
         Collections.reverse(mList);
         adapter.setGoals(mList);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        try {
+            recyclerView.getAdapter().notifyDataSetChanged();
+        } catch (NullPointerException e) {
+            Log.d("hell", String.valueOf(e));
+        }
     }
 
     public void showCards() {

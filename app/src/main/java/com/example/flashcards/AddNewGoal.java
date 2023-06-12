@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.flashcards.Model.CardsModel;
 import com.example.flashcards.Utils.MyDBHelper;
@@ -101,6 +102,14 @@ public class AddNewGoal extends BottomSheetDialogFragment {
                     card.setStatus(0);
                     myDBHelper.insertGoal(card);
                 }
+
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container, new HomeFragment());
+                fragmentTransaction.commit();
+
+                FragmentTransaction fragmentTransaction2 = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction2.replace(R.id.container, new Cards());
+                fragmentTransaction2.commit();
 
                 dismiss();
             }

@@ -1,12 +1,15 @@
 package com.example.flashcards;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +20,12 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class RVTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     CardsRVAdapter adapter;
+    Context context;
 
-    public RVTouchHelper(CardsRVAdapter adapter) {
+    public RVTouchHelper(CardsRVAdapter adapter, Context context) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.adapter = adapter;
+        this.context = context;
     }
 
     @Override
@@ -31,7 +36,9 @@ public class RVTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-        final int position = viewHolder.getAdapterPosition();
+//        final int position = viewHolder.getAdapterPosition();
+        final int position = viewHolder.getBindingAdapterPosition();
+
 
         if (direction == ItemTouchHelper.RIGHT) {
             AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
@@ -55,6 +62,14 @@ public class RVTouchHelper extends ItemTouchHelper.SimpleCallback {
 
             adapter.editGoal(position);
             adapter.notifyItemChanged(position);
+
+            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.container, new HomeFragment());
+            fragmentTransaction.commit();
+
+            FragmentTransaction fragmentTransaction2 = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction2.replace(R.id.container, new Cards());
+            fragmentTransaction2.commit();
 
         }
 
